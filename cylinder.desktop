@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=cylinder Qt3D
+Icon=cylinder.png
+Exec=cylinder
+Terminal=false
+X-Ubuntu-Touch=true

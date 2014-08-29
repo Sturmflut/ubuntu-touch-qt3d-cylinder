@@ -1,0 +1,16 @@
+{
+    "architecture": "armhf",
+    "description": "description of 3dtest",
+    "framework": "ubuntu-sdk-14.10-dev2",
+    "hooks": {
+        "cylinder": {
+            "apparmor": "cylinder.apparmor",
+            "desktop": "cylinder.desktop"
+        }
+    },
+    "maintainer": "maintainerName",
+    "name": "com.ubuntu.developer.sturmflut.cylinder",
+    "title": "cylinder",
+    "version": "0.4"
+}
+
