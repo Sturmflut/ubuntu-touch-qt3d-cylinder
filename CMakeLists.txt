@@ -39,7 +39,7 @@ file(GLOB META_FILES cylinder.png cylinder.desktop cylinder.apparmor)
 add_custom_target(cylinder_metafiles ALL SOURCES ${META_FILES})
 
 # Install meta files
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cylinder.desktop DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES cylinder.desktop DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES ${ICON} DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES "cylinder.apparmor" DESTINATION ${CMAKE_INSTALL_PREFIX})
