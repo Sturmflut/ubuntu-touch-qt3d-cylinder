@@ -68,4 +68,3 @@ add_custom_target("run" cylinder
                     WORKING_DIRECTORY .)
 
 add_custom_target("cylinder_ClickFiles" ALL SOURCES "cylinder.apparmor" "manifest.json")
-

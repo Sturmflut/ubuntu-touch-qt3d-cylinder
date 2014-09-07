@@ -42,12 +42,21 @@
 #include "cylinderview.h"
 #include "Qt3D/qglbuilder.h"
 #include "Qt3D/qglcylinder.h"
+#include "Qt3D/qglcube.h"
 #include <QtCore/qurl.h>
 
 CylinderView::CylinderView(QWindow *parent)
     : QGLView(parent)
 {
     QGLBuilder builder;
+    // Evil hack: it is not possible to just call glClearColor on any device
+    // but it is possible to have a huge, dark SkyBox. Without this hack the
+    // cylinder floats over a transparent background, displaying the contents
+    // of the last app
+    builder << QGL::Smooth << QGLCube(1000.0f);
+
+
+    // Add the cylinder
     builder << QGL::Smooth << QGLCylinder(2.0, 1.5, 2.0, 36, 3, true, true);
 
     QGLMaterial *matLid = new QGLMaterial;
@@ -76,7 +85,6 @@ CylinderView::CylinderView(QWindow *parent)
     int sideMat = root->palette()->addMaterial(matSides);
     sides->setMaterialIndex(sideMat);
     sides->setEffect(QGL::LitDecalTexture2D);
-
 
     cylinder = builder.finalizedSceneNode();
 
