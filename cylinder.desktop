@@ -1,7 +1,8 @@
 [Desktop Entry]
-Type=Application
-Name=cylinder Qt3D
-Icon=cylinder.png
+Name=Qt3D cylinder
+Comment=Qt3D demo app, shows a textured cylinder
 Exec=cylinder
+Icon=cylinder.png
 Terminal=false
+Type=Application
 X-Ubuntu-Touch=true

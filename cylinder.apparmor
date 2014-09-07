@@ -1,7 +1,4 @@
 {
-    "policy_groups": [
-        "networking"
-    ],
+    "policy_groups": [],
     "policy_version": 1.2
 }
-

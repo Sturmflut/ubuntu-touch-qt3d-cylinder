@@ -7,49 +7,65 @@ set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(Qt5Core)
 find_package(Qt5Qml)
 find_package(Qt5Quick)
-find_package(Qt5DBus)
-find_package(Qt5Widgets)
+#find_package(ubuntu-sdk-libs)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+#automatically create moc files
 set(CMAKE_AUTOMOC ON)
 
+# components PATH
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
     OUTPUT_VARIABLE ARCH_TRIPLET
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
+
 set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
+
+option(INSTALL_TESTS "Install the tests on make install" on)
 
 set(APP_NAME          cylinder)
 set(ICON              "cylinder.png")
-
-# Standard install paths
-include(GNUInstallDirs)
-
-set(CMAKE_INSTALL_PREFIX /)
-set(DATA_DIR /)
-set(DESKTOP_DIR ${DATA_DIR})
-
-qt5_add_resources(UI_RESOURCES cylinder.qrc)
-add_executable(cylinder main.cpp cylinderview.cpp ${UI_RESOURCES} latte.png cupTexture.png)
-
-qt5_use_modules(cylinder Widgets 3D)
-
+set(EXEC              "cylinder")
 
 #set install paths
-if(CLICK_MODE)
-  set(CMAKE_INSTALL_PREFIX "/")
-  set(CYLINDER_DIR    "${CMAKE_INSTALL_DATADIR}")
+set(CMAKE_INSTALL_PREFIX /)
 
-  set(QT_IMPORTS_DIR "${CMAKE_INSTALL_LIBDIR}")
-  set(EXEC "cylinder")
-  set(MODULE_PATH ${QT_IMPORTS_DIR})
-else(CLICK_MODE)
-set(CYLINDER_DIR "${CMAKE_INSTALL_DATADIR}/cylinder")
-  execute_process(
-    COMMAND qmake -query QT_INSTALL_QML
-            OUTPUT_VARIABLE QT_IMPORTS_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-set(MODULE_PATH ${QT_IMPORTS_DIR}/cylinder)
-endif(CLICK_MODE)
+# make the source files visible on qtcreator
+file(GLOB SOURCES src/*.cpp src/*.h)
+add_custom_target(cylinder_sources ALL SOURCES ${SOURCES})
+
+# make the meta files visible on qtcreator
+file(GLOB META_FILES cylinder.png cylinder.desktop cylinder.apparmor)
+add_custom_target(cylinder_metafiles ALL SOURCES ${META_FILES})
+
+# Install meta files
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cylinder.desktop DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES ${ICON} DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES "cylinder.apparmor" DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+# Build binary
+qt5_add_resources(UI_RESOURCES src/resources/cylinder.qrc)
+add_executable(cylinder
+               src/main.cpp
+               src/cylinderview.cpp
+               ${UI_RESOURCES}
+               src/resources/latte.png
+               src/resources/cupTexture.png)
+qt5_use_modules(cylinder Widgets 3D)
+
+# Install binary
+install_targets(${CMAKE_INSTALL_PREFIX} cylinder)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cylinder DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+
+add_custom_target("check" cylinder
+                    DEPENDS cylinder
+                    WORKING_DIRECTORY .)
+
+add_custom_target("run" cylinder
+                    DEPENDS cylinder
+                    WORKING_DIRECTORY .)
+
+add_custom_target("cylinder_ClickFiles" ALL SOURCES "cylinder.apparmor" "manifest.json")
+
