@@ -1,7 +1,7 @@
 {
     "architecture": "armhf",
     "description": "Qt3D demo application, shows a floating, textured 3D cylinder",
-    "framework": "ubuntu-sdk-14.10-qml-dev3",
+    "framework": "ubuntu-sdk-14.10",
     "hooks": {
         "cylinder": {
             "apparmor": "cylinder.apparmor",
@@ -11,5 +11,5 @@
     "maintainer": "Sturm Flut <sturmflut@lieberiber.de>",
     "name": "com.ubuntu.developer.sturmflut.cylinder",
     "title": "Qt3D cylinder",
-    "version": "0.97"
+    "version": "0.98"
 }
